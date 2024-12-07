@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
 
-import { ACCESS_TOKEN } from "./config";
+import { ACCESS_TOKEN } from "../lib/config";
 
 interface AuthenticatedRequest extends Request {
     userId: string
@@ -17,6 +17,7 @@ export const authMiddleware = (req: AuthenticatedRequest, res: Response, next: N
 
     if(token){
         req.userId = (token as DecodedToken).userId
-        next()
+        next();
     };
+    return;
 }

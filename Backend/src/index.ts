@@ -3,16 +3,13 @@ import dotenv from 'dotenv';
 dotenv.config();
 import jwt from 'jsonwebtoken';
 import mongoose from "mongoose";
-import { ACCESS_TOKEN, MONGO_URL } from "./config";
-import { contentModel, userModel } from "./db";
-import { authMiddleware } from "./middleware";
-
-mongoose.connect(MONGO_URL);
-
+import { ACCESS_TOKEN } from "./lib/config";
+import { connectDb } from "./lib/db";
+import { authMiddleware } from "./middleware/middleware";
 
 const app = express();
-
 app.use(express.json())
+
 
 app.post('/api/v1/signup', async(req, res) => {
     const { userName, password } = req.body;
@@ -104,5 +101,9 @@ app.post('/api/v1/content', authMiddleware, async(req, res) => {
     }
 })
 
+const PORT = process.env.PORT || 3000;
 
-app.listen(3000)
+app.listen(PORT, () => {
+    console.log(`Server is started on PORT: ${PORT}`)
+    connectDb();
+})
