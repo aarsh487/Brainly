@@ -19,7 +19,7 @@ export const generateLink = async(req: Request, res: Response) => {
              return;
          }
  
-         const hash = random(5);
+         const hash = random(10);
          await LinkModel.create({
              userId: req.userId,
              hash: hash
