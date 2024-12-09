@@ -1,7 +1,11 @@
 import express from 'express';
 import { authMiddleware } from '../middleware/middleware';
-import { createContent } from '../controllers/content.controller';
+import { createContent, deleteContent, getContent } from '../controllers/content.controller';
 
 const router = express.Router();
 
-router.post('/content/create', authMiddleware as unknown as express.RequestHandler, createContent as unknown as express.RequestHandler);
+router.post('/create', authMiddleware, createContent );
+router.get('/', authMiddleware, getContent );
+router.delete('/', authMiddleware, deleteContent );
+
+export default router;

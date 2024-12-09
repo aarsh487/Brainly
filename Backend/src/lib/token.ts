@@ -1,9 +1,8 @@
 import jwt from 'jsonwebtoken';
 import { ACCESS_TOKEN } from './config';
 import { Response } from 'express';
-import { ObjectId } from 'mongodb';
 
-export const generateToken = (userId: ObjectId, res: Response) => {
+export const generateToken = (userId: string, res: Response) => {
     const token = jwt.sign({ userId }, ACCESS_TOKEN, {
         expiresIn: "15d"
     });

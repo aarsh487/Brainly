@@ -1,40 +1,32 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import bcrypt from 'bcrypt';
 import { userModel } from "../models/user.model";
 import { generateToken } from "../lib/token";
 
-interface signupRequestBody {
-    name: string;
-    email: string;
-    password: string;
-}
 
-interface signupResponseBody {
-    userId: string
-    name: string;
-    email: string;
-
-}
-
-export const userSignup = async (req: Request<{}, {}, signupRequestBody>, res: Response): Promise<Response> => {
+export const userSignup = async (req: Request, res: Response) => {
     const { name, email, password } = req.body;
 
     if (!name) {
-        return res.status(400).json({ success: false, message: "Name is required" });
+        res.status(400).json({ success: false, message: "Name is required" });
+        return;
     }
 
     if (!email) {
-        return res.status(400).json({ success: false, message: "Email is required" });
+         res.status(400).json({ success: false, message: "Email is required" });
+         return;
     }
 
     if (!password) {
-        return res.status(400).json({ success: false, message: "password is required" });
+         res.status(400).json({ success: false, message: "password is required" });
+         return;
     }
 
     try {
         const user = await userModel.findOne({ email: email });
         if (user) {
-            return res.status(400).json({ success: false, message: "User already exists" })
+             res.status(400).json({ success: false, message: "User already exists" })
+             return;
         }
 
         const hashedPassword = await bcrypt.hash(password, 5);
@@ -45,21 +37,22 @@ export const userSignup = async (req: Request<{}, {}, signupRequestBody>, res: R
         });
 
         if (newUser) {
-            generateToken(newUser._id, res);
-            return res.status(201).json({
+            generateToken(newUser._id.toString(), res);
+            res.status(201).json({
                 success: true, message: "Sign up successfull",
-                userId: newUser._id,
+                userId: newUser._id.toString(),
                 name: newUser.name,
                 email: newUser.email
             });
+            return;
         } else {
-            return res.status(400).json({ success: false, message: "Invalid User Data" });
+             res.status(400).json({ success: false, message: "Invalid User Data" });
+             return;
         }
-
-
     } catch (error) {
-        console.log("Error during signup", error);
-        return res.status(500).json({ success: false, message: "Internal server Error" })
+        console.log("Error while signup", error);
+         res.status(500).json({ success: false, message: "Internal server Error" });
+         return;
     }
 };
 
@@ -67,37 +60,43 @@ export const userLogin = async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
     if (!email) {
-        return res.status(400).json({ success: false, message: "Email is required" });
+         res.status(400).json({ success: false, message: "Email is required" });
+         return;
     }
 
     if (!password) {
-        return res.status(400).json({ success: false, message: "password is required" });
+         res.status(400).json({ success: false, message: "password is required" });
+         return;
     }
 
     try {
         const user = await userModel.findOne({ email: email });
 
         if (!user) {
-            return res.status(404).json({ success: false, message: "User not found" });
+             res.status(404).json({ success: false, message: "User not found" });
+             return;
         }
 
         const passwordMatch = await bcrypt.compare(password, user.password);
 
         if (!passwordMatch) {
-            return res.status(400).json({ success: false, message: "Incorrect Password" });
+             res.status(400).json({ success: false, message: "Incorrect Password" });
+             return;
         }
 
-        generateToken(user._id, res)
+        generateToken(user._id.toString(), res)
 
-        return res.status(200).json({
+         res.status(200).json({
             success: true, message: "Login successfull",
             userId: user._id,
             email: user.email,
             name: user.name,
         });
+        return;
 
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ success: false, message: "Internal server Error" });
+         res.status(500).json({ success: false, message: "Internal server Error" });
+         return;
     }
 };

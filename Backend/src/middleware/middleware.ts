@@ -1,23 +1,29 @@
 import { NextFunction, Request, Response } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
-
 import { ACCESS_TOKEN } from "../lib/config";
 
-interface AuthenticatedRequest extends Request {
-    userId: string
+
+export const authMiddleware = async(req: Request, res: Response, next: NextFunction) => {
+    try {
+        const token = req.cookies.jwt;
+        if(!token){
+            res.status(404).json({ success: false, message: "Unauthorized Access - Token not found" });
+            return;
+        }
+    
+        const decoded = jwt.verify(token, ACCESS_TOKEN) as JwtPayload; 
+        if(decoded){
+            req.userId = decoded.userId;
+            next();
+        } else{
+            res.status(404).json({ success: false, message: "Unauthorized Access - Invalid Token" });
+            return;
+        }
+    
+    } catch (error) {
+        console.log("Error: ", error);
+        res.status(500).json({ error: true, message: "Internal Server Error" });
+        return;
+    }
+
 };
-
-interface DecodedToken extends JwtPayload {
-    userId: string
-};
-
-export const authMiddleware = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-    const header = req.headers['authorization'];
-    const token = jwt.verify(header as string, ACCESS_TOKEN) as JwtPayload
-
-    if(token){
-        req.userId = (token as DecodedToken).userId
-        next();
-    };
-    return;
-}
