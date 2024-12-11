@@ -11,7 +11,7 @@ export const InputELement = ({ value, type, placeholder, reference }: InputProps
         <div className='pl-2'>{value}</div>
       
         <input
-            className='w-60 rounded-lg shadow-sm h-10 p-4'
+            className='w-60 rounded-lg shadow-sm h-10 p-4 border border-slate-200'
             type={type}
             placeholder={placeholder} 
             ref={reference} 
