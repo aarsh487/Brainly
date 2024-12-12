@@ -2,6 +2,7 @@ import axiosInstance from "../config"
 import { useEffect, useState } from "react";
 
 interface Content {
+    _id: string;
     userId: number;
     title: string;
     type: "twitter" | "youtube";
@@ -10,7 +11,6 @@ interface Content {
 
 export const useContent = () => {
     const [ contents, setContents ] = useState<Content[]>([]);
-    const [ loading, setLoading ] = useState(false);
     async function refresh() {
         const response = await axiosInstance.get(`/api/content`);
         if(response){
@@ -19,15 +19,17 @@ export const useContent = () => {
         }
     };
 
-    const onDelete = async() => {
-        setLoading(true)
-        await axiosInstance.delete('/api/content');
-        setLoading(false)
-    }
+    const deleteCard = async(_id: string) => {
+        const contentId = _id;
+        await axiosInstance.delete('/api/content/' + contentId);
+        refresh();
+     
+    };
 
     useEffect(() => {
         refresh();
-    },[loading]);
+        return () => {}
+    },[]);
 
-    return { contents, refresh, onDelete};
+    return { contents, refresh, deleteCard};
 };
