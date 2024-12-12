@@ -11,6 +11,8 @@ interface Content {
 
 export const useContent = () => {
     const [ contents, setContents ] = useState<Content[]>([]);
+    const [isAuth, setIsAuth ] = useState(false);
+
     async function refresh() {
         const response = await axiosInstance.get(`/api/content`);
         if(response){
@@ -26,10 +28,19 @@ export const useContent = () => {
      
     };
 
+    const checkAuth = async() => {
+        const response = await axiosInstance.get('/api/user/');
+        if(response.data.success){
+            setIsAuth(true)
+        } else{
+            setIsAuth(false)
+        }
+    };
+
     useEffect(() => {
         refresh();
         return () => {}
     },[]);
 
-    return { contents, refresh, deleteCard};
+    return { contents, refresh, deleteCard, checkAuth, isAuth};
 };

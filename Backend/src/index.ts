@@ -14,7 +14,7 @@ app.use(cors({
     credentials: true
 }))
 
-const __dirname = path.resolve();
+const fullPath = path.resolve(__dirname, 'path/to/file');
 
 import userRouter from './routes/user.route';
 import contentRouter from './routes/content.route';

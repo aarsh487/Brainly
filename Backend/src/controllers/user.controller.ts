@@ -100,3 +100,14 @@ export const userLogin = async (req: Request, res: Response) => {
          return;
     }
 };
+
+export const getUser = async(req: Request, res: Response) => {
+    try {
+        res.status(200).json({ success: true, message: "user found" });
+        return;
+    } catch (error) {
+        console.log("Error While getting user: ", error);
+        res.status(500).json({ success: false, message: "Internal Server Error" });
+        return;
+    }
+}
