@@ -70,11 +70,12 @@ export const getContent = async(req: Request, res: Response) => {
 
 export const deleteContent = async(req: Request, res: Response) => {
     const userId = req.userId;
-    const { contentId } = req.body;
+    const contentId = req.params.contentId;
     try {
-        const content = await contentModel.deleteMany({ contentId, userId: userId });
+        const content = await contentModel.findOneAndDelete({ _id: contentId, userId: userId });
         if(!content){
-            res.json({ message: "Trying to delete a doc you don’t own" })
+            res.json({ message: "Content not found" })
+            return;
         } else {
             res.status(200).json({ success: true, message: "Delete succeeded", 
                 content

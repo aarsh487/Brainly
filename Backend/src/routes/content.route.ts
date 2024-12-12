@@ -6,6 +6,6 @@ const router = express.Router();
 
 router.post('/create', authMiddleware, createContent );
 router.get('/', authMiddleware, getContent );
-router.delete('/', authMiddleware, deleteContent );
+router.delete('/:contentId', authMiddleware, deleteContent );
 
 export default router;
