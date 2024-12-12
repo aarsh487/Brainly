@@ -1,8 +1,8 @@
 import { IoCloseSharp } from "react-icons/io5";
 import { InputELement } from "./InputElement";
 import { Button } from "./Button";
-import ToggleSwitch from "./ToggleButton";
 import { useState } from "react";
+import { axiosInstance, BASE_URL } from "../config";
 
 interface ShareModalProp {
     onOpen: boolean;
@@ -11,12 +11,32 @@ interface ShareModalProp {
 
 export const ShareModal = ({ onOpen, onClose }: ShareModalProp) => {
 
-    const [ isToggled, setIsToggled ] = useState(false);
+    const [isOn, setIsOn] = useState(false);
+    const [ value, setValue ] = useState<string>();
 
-    const handleChange = () => {
-        setIsToggled(!isToggled)
+    const handleToggle = async() => {
+        const newIsOn = !isOn;
+        setIsOn(newIsOn);
+        getShareLink(newIsOn);
+        
+    };
 
-    }
+    const getShareLink = async(currentIsOn: boolean) => {
+        if(currentIsOn){
+            const resposnse = await axiosInstance.post('/api/brain/share', {
+                share: true
+            });
+            if(resposnse.data){
+                setValue(BASE_URL + "/api/brain/" + resposnse.data.hash)
+            }
+        } else{
+            await axiosInstance.post('/api/brain/share', {
+                share: false
+            })
+            setValue("")
+        }
+    };
+
     return (<div>
         {onOpen && <>
             <div className="w-full h-screen fixed top-0 left-0 flex justify-center bg-slate-200 opacity-65"></div>
@@ -29,9 +49,23 @@ export const ShareModal = ({ onOpen, onClose }: ShareModalProp) => {
                     </div>
                     <h2 className="font-bold text-lg mt-4">Share memory</h2>
                     <div className="flex flex-col gap-6">
-                        <ToggleSwitch label={"Share"} />
-                        <InputELement value={"Link"} type={"text"} placeholder={"Link"} />
-                        <Button variant={"pTypeButton"} value={"Copy"} />
+                        <div className="toggle-switch mt-6 ml-16" onClick={handleToggle}>
+                            <div className={`switch ${isOn ? 'on' : 'off'}`}>
+                                <div className="toggle-circle" />
+                            </div>
+                            <p>{isOn ? 'SHARE' : 'OFF'}</p>
+                        </div>
+                        <InputELement 
+                            inputValue={value} 
+                            value={"Link"} 
+                            type={"text"} 
+                            placeholder={"Link"} 
+                        />
+                        <Button 
+                            onClick={() => navigator.clipboard.writeText(value as string)} 
+                            variant={"pTypeButton"} 
+                            value={"Copy"} 
+                        />
                     </div>
                 </div>
             </div>

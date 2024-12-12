@@ -5,7 +5,7 @@ import { InputELement } from '../components/InputElement';
 import { RiBrainFill } from "react-icons/ri";
 import { PasswordInput } from '../components/PasswordInpust';
 import { useRef } from 'react';
-import axiosInstance from '../config';
+import { axiosInstance } from '../config';
 
 export const SingupPage = () => {
     const userNameRef = useRef<HTMLInputElement>();

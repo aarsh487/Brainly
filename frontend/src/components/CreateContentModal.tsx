@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { Button } from "./Button";
 import { InputELement } from "./InputElement"
 import { IoCloseSharp } from "react-icons/io5";
-import axiosInstance from "../config";
+import { axiosInstance } from "../config";
 
 
 interface ContentModalProps {

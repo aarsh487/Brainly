@@ -39,9 +39,10 @@ export const Card = ({title, type, link, onDelete} : CardProps) => {
                                         referrerPolicy="strict-origin-when-cross-origin" 
                                         allowFullScreen>
                                     </iframe>}
-            {type === "twitter" && <blockquote className="twitter-tweet">
-                    <a href={link.replace("x.com", "twitter.com")}></a> 
-            </blockquote>}
+            {type === "twitter" && <blockquote 
+                                        className="twitter-tweet">
+                                        <a href={link.replace("x.com", "twitter.com")}></a> 
+                                    </blockquote>}
         </div>
     </div>
   )
