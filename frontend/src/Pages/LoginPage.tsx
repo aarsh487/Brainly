@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import imgurl from '../assets/images/signupimg2.png';
 import { Button } from '../components/Button';
 import { InputELement } from '../components/InputElement';
