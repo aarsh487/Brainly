@@ -102,12 +102,23 @@ export const userLogin = async (req: Request, res: Response) => {
 };
 
 export const getUser = async(req: Request, res: Response) => {
+    const userId = req.userId;
     try {
-        res.status(200).json({ success: true, message: "user found" });
+        res.status(200).json({ success: true, message: "user found", userId });
         return;
     } catch (error) {
         console.log("Error While getting user: ", error);
         res.status(500).json({ success: false, message: "Internal Server Error" });
         return;
+    }
+};
+
+export const userLogout = async(req: Request, res: Response) => {
+    try {
+        res.cookie("jwt", "", {maxAge: 0});
+        res.status(200).json({ success: true, message: "Logout successfull" });
+    } catch (error) {
+        console.log("Error While Logging out: ", error);
+        res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 }

@@ -5,29 +5,23 @@ import { InputELement } from '../components/InputElement';
 import { RiBrainFill } from "react-icons/ri";
 import { PasswordInput } from '../components/PasswordInpust';
 import { useRef } from 'react';
-import { axiosInstance } from '../config';
+import { useContent } from '../hooks/useContent';
+import { UserDataType } from '../types/userdata';
 
 export const LoginPage = () => {
+
+    const { login } = useContent();
 
   const emailRef = useRef<HTMLInputElement>();
   const passwordRef = useRef<HTMLInputElement>();
 
-  const navigate = useNavigate();
-
   const handleLogin = async() => {
-      const email = emailRef.current?.value;
-      const password = passwordRef.current?.value;
-
-      const response = await axiosInstance.post(`/api/user/login`, {
-          email,
-          password
-      });
-
-      if(response.data && response.data.success){
-          navigate('/')
-      } else{
-          console.log(response.data.message);
+    const userData: UserDataType = {
+        email:  emailRef.current?.value || "",
+        password: passwordRef.current?.value || ""
       }
+        login(userData)
+     
   };
   return (
     <div className='h-screen w-full bg-slate-100 flex justify-center items-center'>
