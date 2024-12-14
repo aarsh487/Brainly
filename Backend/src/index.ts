@@ -27,10 +27,15 @@ app.use('/api/brain', linkRouter);
 const PORT = process.env.PORT || 3000;
 
 if (process.env.NODE_ENV === 'production'){
-    app.use(express.static(path.join(__dirname, "../frontend/dist")));
+    const staticPath = path.join(__dirname, "../../frontend/dist");
+    console.log('Serving static files from: ', staticPath);
+
+    app.use(express.static(staticPath));
 
     app.get("*", (req, res) => {
-        res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"))
+        const indexPath = path.join(staticPath, 'index.html')
+        console.log("Resolved index.html path: ", indexPath)
+        res.sendFile(indexPath)
     })
 }
 
