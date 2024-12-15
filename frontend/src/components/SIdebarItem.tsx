@@ -13,7 +13,7 @@ export const SIdebarItem = ({value, icon, onClick}: SidebarItemProps) => {
         <div>
             {icon}
         </div>
-        <h4 className="text-xl">{value}</h4>
+        <h4 className="sm:block hidden text-xl transition-all ease-in-out duration-150">{value}</h4>
     </div>
   )
 }

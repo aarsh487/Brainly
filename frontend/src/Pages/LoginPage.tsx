@@ -27,7 +27,7 @@ export const LoginPage = () => {
     <div className='h-screen w-full bg-slate-100 flex justify-center items-center'>
         <div className='w-11/12 flex justify-between shadow-lg rounded-md'>
             {/* left side  */}
-            <div className='w-1/2 flex flex-col'>
+            <div className='w-full sm:w-1/2 flex flex-col sm:py-0 py-6 transition-all ease-in duration-150'>
             {/* ICON  */}
                 <div className='flex ml-8 mt-4 items-center gap-2'>
                     <RiBrainFill size={50} className='text-purple-300' />
@@ -53,7 +53,7 @@ export const LoginPage = () => {
                 </div>
             </div>
             {/* RIgntSide */}
-            <div className='w-1/2 bg-purple-300 flex flex-col items-center rounded-r-md'>
+            <div className='hidden sm:block w-1/2 bg-purple-300 flex flex-col items-center rounded-r-md transition-all ease-in-out duration-150'>
                 <img src={imgurl} />
                 <div className='text-white text-center mb-20'>
                     <h2 className='font-bold text-2xl'>Connect with the brain outside</h2>

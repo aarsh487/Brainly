@@ -25,10 +25,10 @@ export const HomePage = () => {
       </div>
       <CreateContentModal onOpen={contentModalOpen} onClose={() => setContentModalOpen(false)} />
       <ShareModal onOpen={shareModalOpen} onClose={() => setShareModalOpen(false)} />
-      <div className="flex flex-col gap-8 ml-80 mt-12 mr-8">
+      <div className="flex flex-col gap-8 sm:ml-80 ml-24 mt-12 mr-8">
         <div className="flex justify-between">
           <span className="text-2xl font-bold">All Notes</span>
-          <div className="flex justify-around gap-4">
+          <div className="flex justify-around gap-4 flex-wrap sm:flex-nowrap">
             <Button onClick={() => setShareModalOpen(true)} icon={<GoShareAndroid size={25} />} variant={"secondary"} value={"Share Brain"} />
             <Button onClick={() => setContentModalOpen(true)} icon={<FiPlus size={25} />} variant={"primary"} value={"Add Content"} />
           </div>
