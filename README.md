@@ -5,7 +5,7 @@
 
 <h1 align="center">Brainly</h1>
 <p align="center"><em>Your second memory for storing and managing links from various platforms!</em></p>
-<a href={"https://brainly-n1pn.onrender.com"} align="center">Brainly Link</a>
+<a href="https://brainly-n1pn.onrender.com" align="center">Brainly Live Link</a>
 
 <hr>
 
