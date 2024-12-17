@@ -2,7 +2,7 @@ import { IoCloseSharp } from "react-icons/io5";
 import { InputELement } from "./InputElement";
 import { Button } from "./Button";
 import { useState } from "react";
-import { axiosInstance, BASE_URL } from "../config";
+import { axiosInstance } from "../config";
 
 interface ShareModalProp {
     onOpen: boolean;
@@ -27,7 +27,7 @@ export const ShareModal = ({ onOpen, onClose }: ShareModalProp) => {
                 share: true
             });
             if(resposnse.data){
-                setValue(BASE_URL + "/api/brain/" + resposnse.data.hash)
+                setValue(`https://brainly-n1pn.onrender.com/${resposnse.data.hash}`)
             }
         } else{
             await axiosInstance.post('/api/brain/share', {
