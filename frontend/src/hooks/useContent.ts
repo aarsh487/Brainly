@@ -1,6 +1,7 @@
 import { axiosInstance } from "../config"
 import { create } from 'zustand';
 import { UserDataType } from "../types/userdata";
+import toast from "react-hot-toast";
 
 interface Content {
     _id: string;
@@ -14,6 +15,7 @@ interface Content {
     contents: Content[];
     user: string | null;
     checkingAuth: boolean;
+    sharedUser: string | null;
   
     refresh: () => Promise<void>;
     deleteCard: (_id: string) => Promise<void>;
@@ -21,7 +23,7 @@ interface Content {
     logout: () => Promise<void>;
     login: (userData : UserDataType) => Promise<void>;
     signup: (userData : UserDataType) => Promise<void>;
-
+    shareLink: (link : string) => Promise<void>;
   }
 
 
@@ -29,6 +31,7 @@ export const useContent = create<ContentStore>((set) => ({
     contents: [],
     user: null,
     checkingAuth: false,
+    sharedUser: null,
 
     refresh: async () => {
         try {
@@ -50,6 +53,7 @@ export const useContent = create<ContentStore>((set) => ({
                 set((state) => ({
                     contents: state.contents.filter((content) => content._id !== _id),
                   }));
+                toast.success("Deleted");
             }
         } catch (error) {
             console.log("Error in deleting content", error);
@@ -61,7 +65,6 @@ export const useContent = create<ContentStore>((set) => ({
         try {
             const response = await axiosInstance.get("/api/user/");
             if (response?.data?.success) {
-                console.log("Authenticated user ID:", response.data.userId);
                 set({ user: response.data.userId });
             } else {
                 set({ user: null });
@@ -80,6 +83,7 @@ export const useContent = create<ContentStore>((set) => ({
         if (response.data.success) {
             set({ user: null });
             set({ checkingAuth: false });
+            toast.success("Logout");
         };
     },
 
@@ -92,6 +96,7 @@ export const useContent = create<ContentStore>((set) => ({
         if (response.data.success) {
             set({ user: response.data.userId });
             set({ checkingAuth: false });
+            toast.success("Login");
         };
     },
 
@@ -105,9 +110,25 @@ export const useContent = create<ContentStore>((set) => ({
         if (response.data.success) {
             set({ user: response.data.userId });
             set({ checkingAuth: false });
+            toast.success("Signup");
         };
+    },
+
+    shareLink : async(shareLink) => {
+        try {
+            const response = await axiosInstance.get(`/api/brain/${shareLink}`);
+            if (response) {
+                set({
+                    contents: [response.data.content],
+                });
+                toast.success("Content shared successfully!");
+            }
+        } catch (error) {
+            console.error("Error fetching shared content", error);
+            toast.error("Failed to fetch shared content");
+        }
     }
-}))
+}));
 
 
 

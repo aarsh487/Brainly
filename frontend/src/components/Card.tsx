@@ -3,16 +3,19 @@ import { GoShareAndroid } from "react-icons/go";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { PiYoutubeLogo } from "react-icons/pi";
 import { CiTwitter } from "react-icons/ci";
+import { useContent } from "../hooks/useContent";
+import toast from "react-hot-toast";
 
 interface CardProps {
     key: string;
     title: string;
     type: "twitter" | "youtube" | "document";
     link: string;
-    onDelete: () => void;
+    onDelete?: () => void;
 }
 
 export const Card = ({title, type, link, onDelete} : CardProps) => {
+    const { user } = useContent();
   return (
     <div className='max-w-72 min-w-72 min-h-48 border border-gray-200 rounded-lg bg-white p-3'>
         <div className="flex justify-between p-2">
@@ -26,7 +29,8 @@ export const Card = ({title, type, link, onDelete} : CardProps) => {
                 <a href={link} target="_blank">
                     <GoShareAndroid />
                 </a>
-                <RiDeleteBin6Line className="cursor-pointer" onClick={onDelete} />
+                {user ? <RiDeleteBin6Line className="cursor-pointer" onClick={onDelete} /> : 
+                    <RiDeleteBin6Line className="cursor-pointer" onClick={() => toast.error("Not authorized")} />}
             </div>
         </div>
         <div className="pt-4">

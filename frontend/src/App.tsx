@@ -5,14 +5,15 @@ import { LoginPage } from "./Pages/LoginPage"
 import { useContent } from "./hooks/useContent"
 import { useEffect } from "react"
 import { RiLoader3Line } from "react-icons/ri";
+import { SharedLinkPage } from "./Pages/SharedLinkPage"
+
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const { checkAuth, user, checkingAuth } = useContent();
 
   useEffect(() => {
-    console.log("check auth before")
     checkAuth();
-    console.log("check auth after")
   },[checkAuth]);
 
   if(checkingAuth){
@@ -23,14 +24,18 @@ function App() {
     )
   }
 
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element = {user ? <HomePage /> : <Navigate to='/login' />} />
-        <Route path="/signup" element = {!user ? <SingupPage /> : <Navigate to='/' />} />
-        <Route path="/login" element = {!user? <LoginPage /> : <Navigate to='/' />} />
-      </Routes>
-    </BrowserRouter>
+  return (<>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element = {user ? <HomePage /> : <Navigate to='/login' />} />
+          <Route path="/signup" element = {!user ? <SingupPage /> : <Navigate to='/' />} />
+          <Route path="/login" element = {!user ? <LoginPage /> : <Navigate to='/' />} />
+          <Route path="/share/:link" element = {<SharedLinkPage />} />
+        </Routes>
+      </BrowserRouter>
+
+      <Toaster />
+    </>
   )
 }
 

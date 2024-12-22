@@ -3,6 +3,7 @@ import { InputELement } from "./InputElement";
 import { Button } from "./Button";
 import { useState } from "react";
 import { axiosInstance } from "../config";
+import toast from "react-hot-toast";
 
 interface ShareModalProp {
     onOpen: boolean;
@@ -27,13 +28,15 @@ export const ShareModal = ({ onOpen, onClose }: ShareModalProp) => {
                 share: true
             });
             if(resposnse.data){
-                setValue(`https://brainly-n1pn.onrender.com/${resposnse.data.hash}`)
+                setValue(`https://brainly-n1pn.onrender.com/share/${resposnse.data.hash}`);
+                toast.success("Link Created");
             }
         } else{
             await axiosInstance.post('/api/brain/share', {
                 share: false
-            })
-            setValue("")
+            });
+            setValue("");
+            toast.success("Removed");
         }
     };
 

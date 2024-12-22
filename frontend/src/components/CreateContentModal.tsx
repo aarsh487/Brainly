@@ -3,6 +3,7 @@ import { Button } from "./Button";
 import { InputELement } from "./InputElement"
 import { IoCloseSharp } from "react-icons/io5";
 import { axiosInstance } from "../config";
+import toast from "react-hot-toast";
 
 
 interface ContentModalProps {
@@ -33,6 +34,7 @@ export const CreateContentModal = ({onOpen, onClose}: ContentModalProps) => {
             type
         });
         onClose();
+        toast.success("Ceated");
     };
 
   return (<div>

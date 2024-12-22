@@ -3,11 +3,13 @@ import { SIdebarItem } from "./SIdebarItem";
 import { PiYoutubeLogo } from "react-icons/pi";
 import { CiTwitter } from "react-icons/ci";
 import { GrDocumentText } from "react-icons/gr";
-import { IoIosLogOut } from "react-icons/io";
+import { IoIosLogOut, IoIosLogIn} from "react-icons/io";
 import { useContent } from "../hooks/useContent";
+import { useNavigate } from "react-router-dom";
 
 export const Sidebar = () => {
-  const { logout } = useContent();
+  const { logout, user } = useContent();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
@@ -22,7 +24,8 @@ export const Sidebar = () => {
             <SIdebarItem icon={<PiYoutubeLogo size={25} />} value={"Youtube"} />
             <SIdebarItem icon={<CiTwitter size={25} />} value={"Twitter"} />
             <SIdebarItem icon={<GrDocumentText  size={20} />} value={"Documents"} />
-            <SIdebarItem onClick={handleLogout} icon={<IoIosLogOut size={20} />} value={"Logout"} />
+            { user ? <SIdebarItem onClick={handleLogout} icon={<IoIosLogOut size={20} />} value={"Logout"} /> : 
+              <SIdebarItem onClick={() => navigate('/login')} icon={<IoIosLogIn size={20} />} value={"Login"} />}
         </div>
     </div>
   )

@@ -34,13 +34,15 @@ export const HomePage = () => {
           </div>
         </div>
         <div className="flex gap-4 flex-wrap">
-          {contents.map(({_id, type, link, title }) => <Card 
+          {contents?.length > 0 ? (contents.map(({_id, type, link, title }) => <Card 
             key={_id}
             type={type}
             link={link}
             title={title}
             onDelete={() => {deleteCard(_id)}}
-          />)}
+          />)) : (
+            <p className="mx-22 my-28 sm:mx-96 sm:my-52">No notes available to display.</p> 
+          )}
         </div>
       </div>
     </div>
