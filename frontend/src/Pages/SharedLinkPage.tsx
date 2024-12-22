@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { Card } from "../components/Card";
 import { Sidebar } from "../components/Sidebar";
 import { useContent } from "../hooks/useContent";
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 
 
 export const SharedLinkPage = () => {
